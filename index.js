@@ -45,9 +45,8 @@ Vue.component('product', {
           v-bind:class="{ disabledButton: !inStock }">
           Add to Cart
         </button>
-        <div class="cart">
-          <p>Cart({{ cart }})</p>
-        </div>
+        <button>Remove from Cart</button>
+        
       </div>
     </div>
   `,
@@ -71,7 +70,6 @@ Vue.component('product', {
           variantQuantity: 0
         },
       ],
-      cart: 0,
     }
   },
   computed: {
@@ -93,7 +91,7 @@ Vue.component('product', {
   },
   methods: {
     addToCart() {
-       this.cart += 1
+       this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId)
     },
     updateProduct: function(index) {
       this.selectedVariant = index
@@ -105,6 +103,12 @@ const app = new Vue({ //Vue Instance 생성
   el: '#app', //connects to the div of id is "app"
   data: {
     premium: true,
-    details: ["80% cotton", "20% polyester", "Gender-neutral"]
+    details: ["80% cotton", "20% polyester", "Gender-neutral"],
+    cart: []
+  },
+  methods: {
+    updateCart(id) {
+      this.cart.push(id);
+    }
   }
 });
