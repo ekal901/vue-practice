@@ -1,3 +1,17 @@
+Vue.component('product-details', {
+  props: {
+    details: {
+      type: Array,
+      required: true
+    }
+  },
+  template: `
+    <ul>
+      <li v-for="detail in details">{{ detail }}</li>
+    </ul>
+  `,
+})
+
 Vue.component('product', {
   props: {
     premium: {
@@ -15,10 +29,9 @@ Vue.component('product', {
         <p v-if="inStock">In Stock</p>
         <p v-else v-bind:class="{ outOfStock: !inStock }">Out of Stock</p>
         <p>User is Premium: {{ premium }}</p>
+        <p>Shipping: {{ shipping }}</p>
 
-        <ul>
-          <li v-for="detail in details">{{ detail }}</li>
-        </ul>
+        <product-details :details="details"></product-details>
 
         <div v-for="(variant, index) in variants" 
           :key="variant.variantId" 
@@ -70,6 +83,12 @@ Vue.component('product', {
     },
     inStock() {
       return this.variants[this.selectedVariant].variantQuantity
+    },
+    shipping() {
+      if(this.premium) {
+        return "Free"
+      }
+      return '$2.99'
     }
   },
   methods: {
@@ -85,6 +104,7 @@ const app = new Vue({ //Vue Instance 생성
   //properties (el, data, computed ...)
   el: '#app', //connects to the div of id is "app"
   data: {
-    premium: true
+    premium: true,
+    details: ["80% cotton", "20% polyester", "Gender-neutral"]
   }
 });
