@@ -1,11 +1,11 @@
 Vue.component('product', {
-    props: {
-      premium: {
-        type: Boolean,
-        required: true
-      }
-    },
-    template: `
+  props: {
+    premium: {
+      type: Boolean,
+      required: true
+    }
+  },
+  template: `
       <div class="product">
         <div class="product-image">
           <img :src="loadImage">
@@ -36,7 +36,7 @@ Vue.component('product', {
         <div>
           <h2>Reviews</h2>
           <p v-if="!reviews.length">There are no reviews yet.</p>
-          <ul>
+          <ul v-else>
             <li v-for="review in reviews">
               <p>{{ review.name }}</p>
               <p>Rating: {{ review.rating }}</p>
@@ -47,55 +47,56 @@ Vue.component('product', {
         <product-review @review-submitted="addReview"></product-review>
       </div>
     `,
-    data() {
-      return {
-        product: 'Socks',
-        brand: 'Vue Mastery',
-        selectedVariant: 0,
-        details: ["80% cotton", "20% polyester", "Gender-neutral"],
-        variants: [
-          {
-            variantId: 2234,
-            variantColor: 'green',
-            variantImage: './assets/vmSocks-green.jpeg',
-            variantQuantity: 10
-          },
-          {
-            variantId: 2235,
-            variantColor: 'blue',
-            variantImage: './assets/vmSocks-blue.jpeg',
-            variantQuantity: 0
-          },
-        ],
-        reviews: [],
-      }
-    },
-    computed: {
-      title(){
-        return this.brand + ' ' + this.product
-      },
-      loadImage() {
-        return this.variants[this.selectedVariant].variantImage
-      },
-      inStock() {
-        return this.variants[this.selectedVariant].variantQuantity
-      },
-      shipping() {
-        if(this.premium) {
-          return "Free"
-        }
-        return '$2.99'
-      }
-    },
-    methods: {
-      addToCart() {
-         this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId)
-      },
-      updateProduct: function(index) {
-        this.selectedVariant = index
-      },
-      addReview: function(productReview) { 
-        this.reviews.push(productReview)
-      }
+  data() {
+    return {
+      product: 'Socks',
+      brand: 'Vue Mastery',
+      selectedVariant: 0,
+      details: ["80% cotton", "20% polyester", "Gender-neutral"],
+      variants: [
+        {
+          variantId: 2234,
+          variantColor: 'green',
+          variantImage: './assets/vmSocks-green.jpeg',
+          variantQuantity: 10
+        },
+        {
+          variantId: 2235,
+          variantColor: 'blue',
+          variantImage: './assets/vmSocks-blue.jpeg',
+          variantQuantity: 0
+        },
+      ],
+      reviews: [],
     }
-  })
+  },
+  computed: {
+    title() {
+      return this.brand + ' ' + this.product
+    },
+    loadImage() {
+      return this.variants[this.selectedVariant].variantImage
+    },
+    inStock() {
+      return this.variants[this.selectedVariant].variantQuantity
+    },
+    shipping() {
+      if (this.premium) {
+        return "Free"
+      }
+      return '$2.99'
+    }
+  },
+  methods: {
+    addToCart() {
+      let productId = this.variants[this.selectedVariant].variantId;
+      this.$emit('add-to-cart', productId)
+    },
+    updateProduct: function (index) {
+      this.selectedVariant = index
+    },
+    addReview: function (productReview) {
+      this.reviews.push(productReview)
+    }
+  }
+})

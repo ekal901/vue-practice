@@ -2,8 +2,8 @@ Vue.component("product-review", {
   props: {},
   template: `
     <form class="review-form" @submit.prevent="onSubmit">
-        <p v-if="errors.length">
-            <b>Please correct the following erros(s):</b>
+        <p class="error" v-if="errors.length">
+            <b>Please correct the following error(s):</b>
             <ul>
                 <li v-for="error in errors">{{ error }}</li>
             </ul>
